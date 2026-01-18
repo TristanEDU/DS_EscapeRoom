@@ -2,217 +2,164 @@
 // Initialization & Debug Mode
 // ==========================
 document.addEventListener("DOMContentLoaded", function () {
+  const body = document.body;
   const scene = document.querySelector(".scene");
-  let debugMode = false;
-
   const instructions = document.querySelector(".instructions");
+  const helpToggle = document.querySelector('[data-action="toggleHelp"]');
+  const lookUpButton = document.getElementById("lookUpBtn");
+  const lookDownButton = document.getElementById("lookDownBtn");
+  const controlButtons = document.querySelectorAll("#controls [data-move]");
+  const tvButtons = document.querySelectorAll(".television__channel a");
 
-  // Toggle instructions with "i" key
-  document.addEventListener("keydown", function (event) {
-    if (event.key.toLowerCase() === "i") {
-      debugMode = !debugMode;
-      instructions.style.display = debugMode ? "block" : "none";
+  let movement = null;
+  let helpVisible = instructions?.classList.contains("is-visible");
+
+  // Set your desired min/max for each property
+  const minPx = 200;
+  const maxPx = 1400;
+  const defaultPx = 700;
+  let currentPx = defaultPx;
+  let currentPercent = 7;
+
+  const setHelpVisibility = (visible) => {
+    helpVisible = visible;
+    if (instructions) {
+      instructions.classList.toggle("is-visible", visible);
     }
-  });
+  };
 
-  // Add CSS for active control feedback
-  const style = document.createElement("style");
-  style.textContent = `
-        #controls a.active {
-            background: rgba(197, 22, 22, 1) !important;
-            color: white !important;
-            transform: scale(1.1);
-        }
-        
-        @media (max-width: 768px) {
-            .instructions {
-                font-size: 12px;
-                padding: 10px;
-            }
-            
-            #controls {
-                bottom: 10px;
-            }
-            
-            #controls a {
-                font-size: 20px;
-                padding: 8px;
-            }
-        }
-    `;
-  document.head.appendChild(style);
+  const updateActiveButtons = (activeMove) => {
+    controlButtons.forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.move === activeMove);
+    });
+  };
 
-  // Debug logs
-  console.log("3D Room Scene initialized successfully!");
-  console.log("Controls: WASD or Arrow Keys, Spacebar/Escape to stop");
-  console.log("Touch: Swipe to navigate on mobile devices");
-  console.log('Press "i" to toggle instructions visibility');
-});
+  const startMovement = (type) => {
+    if (!scene) return;
+    movement = type;
+    scene.className = `scene ${type}`;
+    updateActiveButtons(type);
+  };
 
-// ==========================
-// Cube Animation (Toy Block)
-// ==========================
-const cubeContainer = document.querySelector(".cube-container");
+  const stopMovement = () => {
+    if (!scene) return;
+    movement = null;
+    scene.className = "scene stop";
+    updateActiveButtons(null);
+  };
 
-// Spin cube on click
-cubeContainer.addEventListener("click", function () {
-  this.classList.toggle("clicked");
-});
-
-// Remove spin class after animation
-cubeContainer.addEventListener("animationend", function () {
-  this.classList.remove("clicked");
-});
-
-// ==========================
-// Letter Animation (Riddle)
-// ==========================
-document.querySelectorAll(".letter, .letter2").forEach((el) => {
-  el.addEventListener("click", () => {
-    document.body.classList.toggle("change");
-  });
-});
-
-// ==========================
-// Rose Frame Animation
-// ==========================
-const roseFrame = document.querySelector(".rose-frame");
-
-// Rotate rose frame on click
-roseFrame.addEventListener("click", function () {
-  this.classList.toggle("clicked");
-});
-
-// Remove rotate class after animation
-roseFrame.addEventListener("animationend", function () {
-  this.classList.remove("clicked");
-});
-
-// ==========================
-// Toy Box Animation
-// ==========================
-const toyBox = document.querySelector(".toy-box-left");
-
-// Shrink toy box on click
-toyBox.addEventListener("click", function () {
-  this.classList.toggle("clicked");
-});
-
-// ==========================
-// Scene Movement Controls
-// ==========================
-let movement = null;
-// let movementTimer = null;
-const scene = document.querySelector(".scene");
-
-// Start movement animation
-function startMovement(type) {
-  // clearTimeout(movementTimer);
-  movement = type;
-  scene.className = "scene " + type;
-  // movementTimer = setTimeout(stopMovement, 5000);
-}
-
-// Stop movement animation
-function stopMovement() {
-  movement = null;
-  scene.className = "scene stop";
-}
-
-// Button controls for movement
-document.querySelectorAll("[data-move]").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const moveType = btn.getAttribute("data-move");
-    if (moveType === "stop") {
-      stopMovement();
-    } else {
-      startMovement(moveType);
+  const pxToPercent = (px) => {
+    if (px <= defaultPx) {
+      return ((px - minPx) / (defaultPx - minPx)) * 14;
     }
-  });
-});
-
-// ==========================
-// Focus Handling
-// ==========================
-window.addEventListener("load", () => {
-  window.focus();
-});
-window.addEventListener("click", () => {
-  window.focus();
-});
-
-// ==========================
-// Keyboard Controls
-// ==========================
-document.addEventListener("keydown", (e) => {
-  if (e.key === "w" || e.key === "ArrowUp") startMovement("moveForward");
-  if (e.key === "a" || e.key === "ArrowLeft") startMovement("turnLeft");
-  if (e.key === "s" || e.key === "ArrowDown") startMovement("moveBack");
-  if (e.key === "d" || e.key === "ArrowRight") startMovement("turnRight");
-  if (e.key === " " || e.key === "Escape") stopMovement();
-
-  // Perspective controls
-  if (e.key === "PageUp") {
-    currentPx = Math.max(minPx, currentPx - 20);
-    currentPercent = pxToPercent(currentPx);
-    updateView();
-  }
-  if (e.key === "PageDown") {
-    currentPx = Math.min(maxPx, currentPx + 20);
-    currentPercent = pxToPercent(currentPx);
-    updateView();
-  }
-});
-
-// ==========================
-// Perspective/View Controls
-// ==========================
-const body = document.body;
-
-// Set your desired min/max for each property
-const minPx = 200;
-const maxPx = 1400;
-const defaultPx = 700;
-let currentPx = defaultPx;
-let currentPercent = 7;
-
-// Convert px to percent for perspective origin
-function pxToPercent(px) {
-  if (px <= defaultPx) {
-    return ((px - minPx) / (defaultPx - minPx)) * 14;
-  } else {
     return ((maxPx - px) / (maxPx - defaultPx)) * 14;
-  }
-}
+  };
 
-// Update the view/perspective
-function updateView() {
-  body.style.perspectiveOrigin = `43% calc(${currentPercent}% - 3em)`;
-  body.style.transform = `rotateX(0deg) translate(10px, ${currentPx}px)`;
-}
+  const updateView = () => {
+    body.style.perspectiveOrigin = `43% calc(${currentPercent}% - 3em)`;
+    body.style.transform = `rotateX(0deg) translate(10px, ${currentPx}px)`;
+  };
 
-// Look up/down buttons
-document.getElementById("lookUpBtn").addEventListener("click", () => {
-  currentPx = Math.max(minPx, currentPx - 20);
-  currentPercent = pxToPercent(currentPx);
-  updateView();
-});
+  const adjustView = (delta) => {
+    currentPx = Math.min(maxPx, Math.max(minPx, currentPx + delta));
+    currentPercent = pxToPercent(currentPx);
+    updateView();
+  };
 
-document.getElementById("lookDownBtn").addEventListener("click", () => {
-  currentPx = Math.min(maxPx, currentPx + 20);
-  currentPercent = pxToPercent(currentPx);
-  updateView();
-});
+  // Toggle instructions with "i" key or button
+  document.addEventListener("keydown", function (event) {
+    const activeElement = document.activeElement;
+    if (activeElement && ["INPUT", "TEXTAREA"].includes(activeElement.tagName)) {
+      return;
+    }
 
-updateView();
+    if (event.key.toLowerCase() === "i") {
+      setHelpVisibility(!helpVisible);
+      return;
+    }
 
-// ==========================
-// Television Channel Controls
-// ==========================
-var buttons = document.querySelectorAll(".television__channel a");
-for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener("click", function (event) {
-    document.querySelector(".television__screen iframe").src = this.href;
-    event.preventDefault();
+    if (event.key === "w" || event.key === "ArrowUp") startMovement("moveForward");
+    if (event.key === "a" || event.key === "ArrowLeft") startMovement("turnLeft");
+    if (event.key === "s" || event.key === "ArrowDown") startMovement("moveBack");
+    if (event.key === "d" || event.key === "ArrowRight") startMovement("turnRight");
+    if (event.key === " " || event.key === "Escape") stopMovement();
+
+    if (event.key === "PageUp") {
+      adjustView(-20);
+    }
+    if (event.key === "PageDown") {
+      adjustView(20);
+    }
   });
-}
+
+  helpToggle?.addEventListener("click", () => {
+    setHelpVisibility(!helpVisible);
+  });
+
+  // Button controls for movement
+  controlButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const moveType = btn.getAttribute("data-move");
+      if (moveType === "stop") {
+        stopMovement();
+      } else {
+        startMovement(moveType);
+      }
+    });
+  });
+
+  lookUpButton?.addEventListener("click", () => adjustView(-20));
+  lookDownButton?.addEventListener("click", () => adjustView(20));
+
+  updateView();
+
+  // Focus Handling
+  window.addEventListener("load", () => {
+    window.focus();
+  });
+  window.addEventListener("click", () => {
+    window.focus();
+  });
+
+  // Cube Animation (Toy Block)
+  const cubeContainer = document.querySelector(".cube-container");
+  cubeContainer?.addEventListener("click", function () {
+    this.classList.toggle("clicked");
+  });
+  cubeContainer?.addEventListener("animationend", function () {
+    this.classList.remove("clicked");
+  });
+
+  // Letter Animation (Riddle)
+  document.querySelectorAll(".letter, .letter2").forEach((el) => {
+    el.addEventListener("click", () => {
+      document.body.classList.toggle("change");
+    });
+  });
+
+  // Rose Frame Animation
+  const roseFrame = document.querySelector(".rose-frame");
+  roseFrame?.addEventListener("click", function () {
+    this.classList.toggle("clicked");
+  });
+  roseFrame?.addEventListener("animationend", function () {
+    this.classList.remove("clicked");
+  });
+
+  // Toy Box Animation
+  const toyBox = document.querySelector(".toy-box-left");
+  toyBox?.addEventListener("click", function () {
+    this.classList.toggle("clicked");
+  });
+
+  // Television Channel Controls
+  tvButtons.forEach((button) => {
+    button.addEventListener("click", function (event) {
+      const iframe = document.querySelector(".television__screen iframe");
+      if (iframe) {
+        iframe.src = this.href;
+      }
+      event.preventDefault();
+    });
+  });
+});

@@ -2,8 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap');
 
 :root {
-  --turnSpeed: 40s;
-  --speed: 300s;
+  --turnSpeed: 18s;
+  --speed: 120s;
+  --control-accent: rgb(197, 22, 22);
 }
 
 @keyframes sceneRotateLeft {
@@ -54,6 +55,7 @@ body {
   position: relative;
   transform-style: preserve-3d;
   z-index: 1;
+  will-change: transform;
 }
 
 .frontWall,
@@ -193,21 +195,36 @@ body {
 
 #controls {
   position: fixed;
-  bottom: 950px;
-  left: 94%;
-  transform: translateX(-60%);
+  bottom: 1.5rem;
+  right: 1.5rem;
   z-index: 100;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
 .center-row {
   display: flex;
 }
 
+#controls .controls-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+#controls .controls-block--look {
+  align-items: stretch;
+}
+
 #controls button {
   text-decoration: none;
-  color: rgb(197, 22, 22);
+  color: var(--control-accent);
   text-shadow: 2px 2px #000;
   font-size: 24px;
   padding: 10px;
@@ -223,6 +240,17 @@ body {
 #controls button:focus {
   background: rgba(197, 22, 22, 0.8);
   color: white;
+}
+
+#controls button.active {
+  background: var(--control-accent);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+#controls .help-toggle {
+  font-size: 16px;
+  padding: 8px 10px;
 }
 
 /* #controls a:link,
@@ -1095,14 +1123,25 @@ iframe {
 
 .instructions {
   position: fixed;
-  top: -403px;
-  left: 20px;
+  top: 1.25rem;
+  left: 1.25rem;
   color: white;
   background: rgba(0, 0, 0, 0.8);
   padding: 15px;
   border-radius: 8px;
   font-size: 14px;
   z-index: 100;
+  max-width: 220px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.instructions.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .instructions h3 {
@@ -1112,6 +1151,24 @@ iframe {
 
 .instructions p {
   margin: 5px 0;
+}
+
+@media (max-width: 900px) {
+  #controls {
+    right: 1rem;
+    bottom: 1rem;
+    padding: 0.5rem;
+  }
+
+  #controls button {
+    font-size: 20px;
+    padding: 8px;
+  }
+
+  .instructions {
+    max-width: 180px;
+    font-size: 12px;
+  }
 }
 
 .rose-number {
