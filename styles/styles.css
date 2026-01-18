@@ -167,16 +167,6 @@ body {
   animation-play-state: paused, paused, paused, paused;
 }
 
-#moveForward,
-#turnLeft,
-#stop,
-#turnRight,
-#moveBack {
-  position: absolute;
-  left: -5000px;
-  top: -5000px;
-}
-
 .flex-grid {
   display: flex;
   justify-content: space-between;
@@ -193,16 +183,35 @@ body {
 
 #controls {
   position: fixed;
-  bottom: 950px;
-  left: 94%;
-  transform: translateX(-60%);
+  bottom: 24px;
+  right: 24px;
   z-index: 100;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.controls__toggle {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 12px;
+}
+
+.controls__pad,
+.controls__look {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+}
+
+.controls__look {
+  width: 100%;
 }
 
 .center-row {
   display: flex;
+  gap: 6px;
 }
 
 #controls button {
@@ -210,7 +219,7 @@ body {
   color: rgb(197, 22, 22);
   text-shadow: 2px 2px #000;
   font-size: 24px;
-  padding: 10px;
+  padding: 10px 12px;
   background: rgba(0, 0, 0, 0.7);
   border-radius: 5px;
   margin: 2px;
@@ -223,6 +232,17 @@ body {
 #controls button:focus {
   background: rgba(197, 22, 22, 0.8);
   color: white;
+}
+
+#controls button[aria-pressed="true"] {
+  background: rgba(197, 22, 22, 0.85);
+  color: white;
+  transform: scale(1.05);
+}
+
+.controls__look button {
+  font-size: 16px;
+  width: 100%;
 }
 
 /* #controls a:link,
@@ -1095,23 +1115,70 @@ iframe {
 
 .instructions {
   position: fixed;
-  top: -403px;
-  left: 20px;
+  top: 24px;
+  left: 24px;
+  width: min(320px, 90vw);
   color: white;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 15px;
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.86);
+  padding: 16px;
+  border-radius: 12px;
   font-size: 14px;
   z-index: 100;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+}
+
+.instructions[data-visible="false"] {
+  display: none;
+}
+
+.instructions__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.instructions__toggle {
+  background: transparent;
+  color: #ffd7aa;
+  border: 1px solid rgba(255, 215, 170, 0.6);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.instructions__toggle:hover,
+.instructions__toggle:focus {
+  border-color: rgba(255, 215, 170, 1);
+  color: #fff5e6;
 }
 
 .instructions h3 {
-  margin: 0 0 10px 0;
+  margin: 0;
   color: rgb(197, 22, 22);
 }
 
 .instructions p {
-  margin: 5px 0;
+  margin: 6px 0;
+}
+
+@media (max-width: 900px) {
+  #controls {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .instructions {
+    top: 16px;
+    left: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene {
+    animation: none;
+  }
 }
 
 .rose-number {
