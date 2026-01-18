@@ -9,43 +9,26 @@
     <script src="./../scripts.js" defer></script>
   </head>
   <body>
-    <div class="instructions">
-      <h3>Navigation Controls</h3>
-      <p>Use arrow keys below or keyboard shortcuts:</p>
+    <div class="instructions" id="instructions" data-visible="false">
+      <div class="instructions__header">
+        <h3>Navigation Controls</h3>
+        <button
+          class="instructions__toggle"
+          type="button"
+          id="toggleHelpInline"
+          aria-expanded="false">
+          Hide tips
+        </button>
+      </div>
+      <p>Use the control pad or keyboard shortcuts:</p>
       <p>W/↑ - Move Forward</p>
       <p>A/← - Turn Left</p>
       <p>S/↓ - Move Back</p>
       <p>D/→ - Turn Right</p>
       <p>Space/● - Stop</p>
-      <p>⤒/PageUp - Look Down</p>
-      <p>⤓/PageDown - Look Up</p>
+      <p>⤒/PageUp - Look Up</p>
+      <p>⤓/PageDown - Look Down</p>
     </div>
-
-    <a
-      tabindex="1"
-      accesskey="W"
-      href="#moveForward"
-      class="moveForward"
-      id="moveForward"></a>
-    <a
-      tabindex="2"
-      accesskey="A"
-      class="turnLeft"
-      id="turnLeft"
-      href="#turnLeft"></a>
-    <a tabindex="5" accesskey="X" class="stop" id="stop" href="#stop"></a>
-    <a
-      tabindex="3"
-      accesskey="D"
-      class="turnRight"
-      id="turnRight"
-      href="#turnRight"></a>
-    <a
-      tabindex="4"
-      accesskey="S"
-      class="moveBack"
-      id="moveBack"
-      href="#moveBack"></a>
 
     <div class="scene">
       <div class="back-door">
@@ -273,6 +256,7 @@
         <iframe
           id="Maze-frame"
           src="https://tristanedu.github.io/Maze/"
+          loading="lazy"
           frameborder="0"></iframe>
       </div>
       <div class="rightWall"></div>
@@ -416,7 +400,7 @@
                 src="https://zoomquilt.org/"
                 id="tv"
                 name="tv"
-                loading="eager"
+                loading="lazy"
                 style="border: 0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin"
@@ -514,20 +498,27 @@
     <!-- </div>
     </div> -->
 
-    <div id="controls">
-      <button data-move="moveForward" aria-label="Move Forward">▲</button>
-      <div class="center-row">
-        <button data-move="turnLeft" aria-label="Turn Left">◀</button>
-        <button data-move="stop" aria-label="Stop">●</button>
-        <button data-move="turnRight" aria-label="Turn Right">▶</button>
+    <div id="controls" class="controls">
+      <button
+        class="controls__toggle"
+        type="button"
+        id="toggleHelp"
+        aria-expanded="false">
+        Show tips
+      </button>
+      <div class="controls__pad">
+        <button data-move="moveForward" aria-label="Move Forward">▲</button>
+        <div class="center-row">
+          <button data-move="turnLeft" aria-label="Turn Left">◀</button>
+          <button data-move="stop" aria-label="Stop">●</button>
+          <button data-move="turnRight" aria-label="Turn Right">▶</button>
+        </div>
+        <button data-move="moveBack" aria-label="Move Back">▼</button>
       </div>
-      <button data-move="moveBack" aria-label="Move Back">▼</button>
-      <button id="lookDownBtn" style="font-size: 18px" aria-label="Look Down">
-        ⤒ Look Up
-      </button>
-      <button id="lookUpBtn" style="font-size: 18px" aria-label="Look Up">
-        ⤓ Look Down
-      </button>
+      <div class="controls__look">
+        <button id="lookUpBtn" aria-label="Look Up">⤒ Look Up</button>
+        <button id="lookDownBtn" aria-label="Look Down">⤓ Look Down</button>
+      </div>
     </div>
 
     <!-- <script src="styles.js"></script> -->
