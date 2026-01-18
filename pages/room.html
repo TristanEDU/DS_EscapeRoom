@@ -9,43 +9,27 @@
     <script src="./../scripts.js" defer></script>
   </head>
   <body>
-    <div class="instructions">
-      <h3>Navigation Controls</h3>
-      <p>Use arrow keys below or keyboard shortcuts:</p>
-      <p>W/↑ - Move Forward</p>
-      <p>A/← - Turn Left</p>
-      <p>S/↓ - Move Back</p>
-      <p>D/→ - Turn Right</p>
-      <p>Space/● - Stop</p>
-      <p>⤒/PageUp - Look Down</p>
-      <p>⤓/PageDown - Look Up</p>
+    <div class="hud">
+      <button
+        class="hud__toggle"
+        id="toggleHelp"
+        aria-expanded="true"
+        aria-controls="instructions">
+        Hide Help
+      </button>
+      <div class="instructions" id="instructions" role="region">
+        <h3>Navigation Controls</h3>
+        <p>Use the on-screen controls or keyboard shortcuts:</p>
+        <p><strong>W/↑</strong> - Move Forward</p>
+        <p><strong>A/←</strong> - Turn Left</p>
+        <p><strong>S/↓</strong> - Move Back</p>
+        <p><strong>D/→</strong> - Turn Right</p>
+        <p><strong>Space/●</strong> - Stop</p>
+        <p><strong>PageUp</strong> - Look Up</p>
+        <p><strong>PageDown</strong> - Look Down</p>
+        <p class="instructions__note">Press <strong>i</strong> to toggle help.</p>
+      </div>
     </div>
-
-    <a
-      tabindex="1"
-      accesskey="W"
-      href="#moveForward"
-      class="moveForward"
-      id="moveForward"></a>
-    <a
-      tabindex="2"
-      accesskey="A"
-      class="turnLeft"
-      id="turnLeft"
-      href="#turnLeft"></a>
-    <a tabindex="5" accesskey="X" class="stop" id="stop" href="#stop"></a>
-    <a
-      tabindex="3"
-      accesskey="D"
-      class="turnRight"
-      id="turnRight"
-      href="#turnRight"></a>
-    <a
-      tabindex="4"
-      accesskey="S"
-      class="moveBack"
-      id="moveBack"
-      href="#moveBack"></a>
 
     <div class="scene">
       <div class="back-door">
@@ -273,7 +257,8 @@
         <iframe
           id="Maze-frame"
           src="https://tristanedu.github.io/Maze/"
-          frameborder="0"></iframe>
+          frameborder="0"
+          loading="lazy"></iframe>
       </div>
       <div class="rightWall"></div>
       <div class="toy-box">
@@ -514,20 +499,33 @@
     <!-- </div>
     </div> -->
 
-    <div id="controls">
-      <button data-move="moveForward" aria-label="Move Forward">▲</button>
+    <div id="controls" class="controls" role="group" aria-label="Navigation">
+      <button class="control-button" data-move="moveForward" aria-label="Move Forward">
+        ▲
+      </button>
       <div class="center-row">
-        <button data-move="turnLeft" aria-label="Turn Left">◀</button>
-        <button data-move="stop" aria-label="Stop">●</button>
-        <button data-move="turnRight" aria-label="Turn Right">▶</button>
+        <button class="control-button" data-move="turnLeft" aria-label="Turn Left">
+          ◀
+        </button>
+        <button class="control-button" data-move="stop" aria-label="Stop">●</button>
+        <button class="control-button" data-move="turnRight" aria-label="Turn Right">
+          ▶
+        </button>
       </div>
-      <button data-move="moveBack" aria-label="Move Back">▼</button>
-      <button id="lookDownBtn" style="font-size: 18px" aria-label="Look Down">
-        ⤒ Look Up
+      <button class="control-button" data-move="moveBack" aria-label="Move Back">
+        ▼
       </button>
-      <button id="lookUpBtn" style="font-size: 18px" aria-label="Look Up">
-        ⤓ Look Down
-      </button>
+      <div class="control-row">
+        <button class="control-button control-button--text" id="lookUpBtn" aria-label="Look Up">
+          ⤒ Look Up
+        </button>
+        <button
+          class="control-button control-button--text"
+          id="lookDownBtn"
+          aria-label="Look Down">
+          ⤓ Look Down
+        </button>
+      </div>
     </div>
 
     <!-- <script src="styles.js"></script> -->

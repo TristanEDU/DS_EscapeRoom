@@ -2,8 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap');
 
 :root {
-  --turnSpeed: 40s;
-  --speed: 300s;
+  --turnSpeed: 22s;
+  --speed: 180s;
+  --ui-panel: rgba(15, 15, 20, 0.85);
+  --ui-border: rgba(255, 255, 255, 0.15);
+  --ui-accent: #d14b4b;
+  --ui-text: #f8f1e6;
 }
 
 @keyframes sceneRotateLeft {
@@ -54,6 +58,7 @@ body {
   position: relative;
   transform-style: preserve-3d;
   z-index: 1;
+  will-change: transform;
 }
 
 .frontWall,
@@ -191,38 +196,143 @@ body {
   z-index: 99;
 }
 
-#controls {
+.hud {
   position: fixed;
-  bottom: 950px;
-  left: 94%;
-  transform: translateX(-60%);
-  z-index: 100;
+  top: 24px;
+  left: 24px;
+  z-index: 120;
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  max-width: min(340px, 85vw);
 }
 
-.center-row {
-  display: flex;
-}
-
-#controls button {
-  text-decoration: none;
-  color: rgb(197, 22, 22);
-  text-shadow: 2px 2px #000;
-  font-size: 24px;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 5px;
-  margin: 2px;
-  border: none;
+.hud__toggle {
+  background: var(--ui-panel);
+  color: var(--ui-text);
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-#controls button:hover,
-#controls button:focus {
-  background: rgba(197, 22, 22, 0.8);
-  color: white;
+.instructions {
+  background: var(--ui-panel);
+  border: 1px solid var(--ui-border);
+  border-radius: 16px;
+  padding: 16px 18px;
+  color: var(--ui-text);
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.instructions.is-hidden {
+  display: none;
+}
+
+.instructions h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.instructions p {
+  margin: 6px 0;
+}
+
+.instructions__note {
+  opacity: 0.8;
+  font-style: italic;
+}
+
+#controls {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 110;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--ui-panel);
+  border: 1px solid var(--ui-border);
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.center-row,
+.control-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.control-button {
+  color: var(--ui-accent);
+  text-shadow: 1px 1px 0 #000;
+  font-size: 24px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.control-button--text {
+  font-size: 14px;
+  padding: 8px 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.control-button:hover,
+.control-button:focus {
+  background: rgba(209, 75, 75, 0.2);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.control-button.is-active {
+  background: rgba(209, 75, 75, 0.35);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 768px) {
+  .hud {
+    top: 12px;
+    left: 12px;
+    max-width: min(300px, 92vw);
+  }
+
+  #controls {
+    right: 12px;
+    bottom: 12px;
+    padding: 10px;
+  }
+
+  .control-button {
+    font-size: 20px;
+    padding: 8px 10px;
+  }
+
+  .control-button--text {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene {
+    animation-play-state: paused !important;
+  }
 }
 
 /* #controls a:link,
@@ -1091,27 +1201,6 @@ iframe {
 
 .tree-right-3 {
   transform: translateZ(21em) translateX(5em) translateY(-25em);
-}
-
-.instructions {
-  position: fixed;
-  top: -403px;
-  left: 20px;
-  color: white;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 15px;
-  border-radius: 8px;
-  font-size: 14px;
-  z-index: 100;
-}
-
-.instructions h3 {
-  margin: 0 0 10px 0;
-  color: rgb(197, 22, 22);
-}
-
-.instructions p {
-  margin: 5px 0;
 }
 
 .rose-number {
