@@ -9,16 +9,17 @@
     <script src="./../scripts.js" defer></script>
   </head>
   <body>
-    <div class="instructions">
+    <div class="instructions is-visible">
       <h3>Navigation Controls</h3>
-      <p>Use arrow keys below or keyboard shortcuts:</p>
+      <p>Use the on-screen controls or keyboard shortcuts:</p>
       <p>W/↑ - Move Forward</p>
       <p>A/← - Turn Left</p>
       <p>S/↓ - Move Back</p>
       <p>D/→ - Turn Right</p>
       <p>Space/● - Stop</p>
-      <p>⤒/PageUp - Look Down</p>
-      <p>⤓/PageDown - Look Up</p>
+      <p>PageUp - Look Up</p>
+      <p>PageDown - Look Down</p>
+      <p>Press I to toggle this panel.</p>
     </div>
 
     <a
@@ -514,20 +515,23 @@
     <!-- </div>
     </div> -->
 
-    <div id="controls">
-      <button data-move="moveForward" aria-label="Move Forward">▲</button>
-      <div class="center-row">
-        <button data-move="turnLeft" aria-label="Turn Left">◀</button>
-        <button data-move="stop" aria-label="Stop">●</button>
-        <button data-move="turnRight" aria-label="Turn Right">▶</button>
+    <div id="controls" aria-label="Navigation controls">
+      <div class="controls-block">
+        <button data-move="moveForward" aria-label="Move Forward">▲</button>
+        <div class="center-row">
+          <button data-move="turnLeft" aria-label="Turn Left">◀</button>
+          <button data-move="stop" aria-label="Stop">●</button>
+          <button data-move="turnRight" aria-label="Turn Right">▶</button>
+        </div>
+        <button data-move="moveBack" aria-label="Move Back">▼</button>
       </div>
-      <button data-move="moveBack" aria-label="Move Back">▼</button>
-      <button id="lookDownBtn" style="font-size: 18px" aria-label="Look Down">
-        ⤒ Look Up
-      </button>
-      <button id="lookUpBtn" style="font-size: 18px" aria-label="Look Up">
-        ⤓ Look Down
-      </button>
+      <div class="controls-block controls-block--look">
+        <button id="lookUpBtn" aria-label="Look Up">⤒ Look Up</button>
+        <button id="lookDownBtn" aria-label="Look Down">⤓ Look Down</button>
+        <button class="help-toggle" data-action="toggleHelp">
+          ℹ Help
+        </button>
+      </div>
     </div>
 
     <!-- <script src="styles.js"></script> -->
